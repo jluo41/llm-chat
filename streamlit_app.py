@@ -106,24 +106,12 @@ if model_type == "OpenAI Models (GPT-3+)":
     st.info("Using OpenAI models requires an API key. Get yours at [platform.openai.com](https://platform.openai.com/api-keys)")
 
 else:  # Hugging Face Models
-    col_config1, col_config2 = st.columns([2, 1])
-
-    with col_config1:
-        # Endpoint URL input
-        endpoint_url = st.text_input(
-            "Hugging Face Endpoint URL",
-            placeholder="https://your-endpoint.us-east-1.aws.endpoints.huggingface.cloud",
-            help="Enter your Hugging Face endpoint URL"
-        )
-
-    with col_config2:
-        # API Token input (optional)
-        hf_api_token = st.text_input(
-            "HF API Token (Optional)",
-            type="password",
-            placeholder="hf_xxxxxxxxxxxxx",
-            help="Enter your Hugging Face API token if required"
-        )
+    # Endpoint URL input only (no API token field)
+    endpoint_url = st.text_input(
+        "Hugging Face Endpoint URL",
+        placeholder="https://your-endpoint.us-east-1.aws.endpoints.huggingface.cloud",
+        help="Enter your Hugging Face endpoint URL"
+    )
 
     st.info("Using Hugging Face models requires a deployed endpoint. Deploy models at [huggingface.co](https://huggingface.co)")
 
@@ -182,7 +170,7 @@ with col2:
                         if "error" in result:
                             st.error(f"Error: {result['error']}")
                         else:
-                            st.success("Generated Text:")
+                            st.success(f"Generated Text (Model: {openai_model}):")
                             st.write(result["generated_text"])
 
                             # Show raw response in expander
@@ -204,8 +192,8 @@ with col2:
                         }
                     }
 
-                    # Make the API call
-                    result = query_huggingface(payload, endpoint_url, hf_api_token if 'hf_api_token' in locals() else None)
+                    # Make the API call (no API token)
+                    result = query_huggingface(payload, endpoint_url)
 
                     # Display the result
                     with output_container:
@@ -217,13 +205,13 @@ with col2:
                             # Handle different response formats
                             if isinstance(result, list) and len(result) > 0:
                                 if "generated_text" in result[0]:
-                                    st.success("Generated Text:")
+                                    st.success("Generated Text (Hugging Face Model):")
                                     st.write(result[0]["generated_text"])
                                 else:
                                     st.json(result)
                             elif isinstance(result, dict):
                                 if "generated_text" in result:
-                                    st.success("Generated Text:")
+                                    st.success("Generated Text (Hugging Face Model):")
                                     st.write(result["generated_text"])
                                 else:
                                     st.json(result)
@@ -302,7 +290,7 @@ with st.sidebar:
                         "inputs": "Hello",
                         "parameters": {}
                     }
-                    test_result = query_huggingface(test_payload, endpoint_url, hf_api_token if 'hf_api_token' in locals() else None)
+                    test_result = query_huggingface(test_payload, endpoint_url)
                     if "error" in test_result:
                         st.error(f"Connection failed: {test_result['error']}")
                     else:
