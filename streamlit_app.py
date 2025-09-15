@@ -37,15 +37,14 @@ def query_huggingface(payload, endpoint_url, api_token=None):
 # Function to query OpenAI API using langchain
 def query_openai(prompt, api_key, model_name="gpt-3.5-turbo", max_tokens=100, temperature=0.7):
     try:
-        from langchain.llms import OpenAI
-        from langchain.chat_models import ChatOpenAI
-        from langchain.schema import HumanMessage
+        from langchain_openai import OpenAI, ChatOpenAI
+        from langchain_core.messages import HumanMessage
 
         if model_name in ["gpt-3.5-turbo", "gpt-4", "gpt-4-turbo", "gpt-4o", "gpt-4o-mini"]:
             # Use chat model for GPT-3.5 and GPT-4 chat models
             llm = ChatOpenAI(
                 api_key=api_key,
-                model_name=model_name,
+                model=model_name,  # Note: use 'model' not 'model_name' for langchain_openai
                 max_tokens=max_tokens,
                 temperature=temperature
             )
@@ -55,14 +54,14 @@ def query_openai(prompt, api_key, model_name="gpt-3.5-turbo", max_tokens=100, te
             # Use completion model for GPT-3 models and instruct models
             llm = OpenAI(
                 api_key=api_key,
-                model_name=model_name,
+                model=model_name,  # Note: use 'model' not 'model_name' for langchain_openai
                 max_tokens=max_tokens,
                 temperature=temperature
             )
             response = llm.invoke(prompt)
             return {"generated_text": response}
     except ImportError:
-        return {"error": "Please install langchain and openai: pip install langchain openai"}
+        return {"error": "Please install required packages: pip install langchain-openai"}
     except Exception as e:
         return {"error": str(e)}
 
@@ -99,15 +98,7 @@ if model_type == "OpenAI Models (GPT-3+)":
                 "gpt-4",
                 "gpt-3.5-turbo",
                 "gpt-3.5-turbo-instruct",
-                "text-davinci-003",  # GPT-3
-                "text-davinci-002",  # GPT-3
-                "text-curie-001",    # GPT-3
-                "text-babbage-001",  # GPT-3
-                "text-ada-001",      # GPT-3
-                "davinci",           # GPT-3
-                "curie",             # GPT-3
-                "babbage",           # GPT-3
-                "ada"                # GPT-3
+                "davinci-002",  # GPT-3
             ],
             help="Choose the OpenAI model to use (GPT-4, GPT-3.5, or GPT-3)"
         )
@@ -154,7 +145,7 @@ with col1:
 
     # Advanced parameters in an expander
     with st.expander("Advanced Parameters"):
-        max_length = st.slider("Max Length/Tokens", 10, 500, 100)
+        max_length = st.slider("Max Length/Tokens", 10, 2000, 500)
         temperature = st.slider("Temperature", 0.1, 2.0, 0.7, 0.1)
 
         if model_type == "Hugging Face Models (GPT-1/GPT-2)":
@@ -324,7 +315,7 @@ with st.sidebar:
         **Required Libraries:**
         ```bash
         pip install streamlit requests
-        pip install langchain openai  # For OpenAI models
+        pip install langchain-openai  # For OpenAI models
         ```
         """
     )
