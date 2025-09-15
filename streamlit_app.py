@@ -147,7 +147,7 @@ with col1:
     # Text input area
     user_input = st.text_area(
         "Enter your prompt:",
-        value="Can you please let us know more details about your ",
+        value="Which one is larger, 9.11 or 9.9?",
         height=150,
         help="Enter the text you want the model to complete"
     )
