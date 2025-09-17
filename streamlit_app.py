@@ -6,7 +6,8 @@ import json
 st.set_page_config(
     page_title="Text Generation App",
     page_icon="AI",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
 
 # Title and description
@@ -92,18 +93,19 @@ if model_type == "OpenAI Models (GPT-3+)":
         openai_model = st.selectbox(
             "Select OpenAI Model",
             [
+                "davinci-002",       # GPT-3
                 "gpt-3.5-turbo",
                 "gpt-3.5-turbo-instruct",
-                "text-davinci-003",  # GPT-3
-                "text-davinci-002",  # GPT-3
-                "text-curie-001",    # GPT-3
-                "text-babbage-001",  # GPT-3
-                "text-ada-001",      # GPT-3
-                "davinci-002",       # GPT-3
-                "davinci",           # GPT-3
-                "curie",             # GPT-3
-                "babbage",           # GPT-3
-                "ada"                # GPT-3
+                # "text-davinci-003",  # GPT-3
+                # "text-davinci-002",  # GPT-3
+                # "text-curie-001",    # GPT-3
+                # "text-babbage-001",  # GPT-3
+                # "text-ada-001",      # GPT-3
+                
+                # "davinci",           # GPT-3
+                # "curie",             # GPT-3
+                # "babbage",           # GPT-3
+                # "ada"                # GPT-3
             ],
             help="Choose the OpenAI model to use (GPT-3.5 or GPT-3)"
         )
