@@ -40,8 +40,8 @@ def query_openai(prompt, api_key, model_name="gpt-3.5-turbo", max_tokens=100, te
         from langchain_openai import OpenAI, ChatOpenAI
         from langchain_core.messages import HumanMessage
 
-        if model_name in ["gpt-3.5-turbo", "gpt-4", "gpt-4-turbo", "gpt-4o", "gpt-4o-mini"]:
-            # Use chat model for GPT-3.5 and GPT-4 chat models
+        if model_name in ["gpt-3.5-turbo"]:
+            # Use chat model for GPT-3.5 turbo
             llm = ChatOpenAI(
                 api_key=api_key,
                 model=model_name,  # Note: use 'model' not 'model_name' for langchain_openai
@@ -92,15 +92,20 @@ if model_type == "OpenAI Models (GPT-3+)":
         openai_model = st.selectbox(
             "Select OpenAI Model",
             [
-                "gpt-4o",
-                "gpt-4o-mini",
-                "gpt-4-turbo",
-                "gpt-4",
                 "gpt-3.5-turbo",
                 "gpt-3.5-turbo-instruct",
-                "davinci-002",  # GPT-3
+                "text-davinci-003",  # GPT-3
+                "text-davinci-002",  # GPT-3
+                "text-curie-001",    # GPT-3
+                "text-babbage-001",  # GPT-3
+                "text-ada-001",      # GPT-3
+                "davinci-002",       # GPT-3
+                "davinci",           # GPT-3
+                "curie",             # GPT-3
+                "babbage",           # GPT-3
+                "ada"                # GPT-3
             ],
-            help="Choose the OpenAI model to use (GPT-4, GPT-3.5, or GPT-3)"
+            help="Choose the OpenAI model to use (GPT-3.5 or GPT-3)"
         )
 
     st.info("Using OpenAI models requires an API key. Get yours at [platform.openai.com](https://platform.openai.com/api-keys)")
@@ -237,10 +242,12 @@ with st.sidebar:
             5. Copy and paste it in the app
 
             **Available Models:**
-            - **GPT-4o / GPT-4o-mini**: Latest models
-            - **GPT-4 / GPT-4-turbo**: Most capable
-            - **GPT-3.5-turbo**: Fast and efficient
-            - **text-davinci-003**: GPT-3 completion model
+            - **GPT-3.5-turbo**: Fast and efficient chat model
+            - **GPT-3.5-turbo-instruct**: Instruction-following model
+            - **text-davinci-003/002**: Most capable GPT-3 models
+            - **text-curie-001**: Very capable, faster GPT-3
+            - **text-babbage-001**: Straightforward tasks
+            - **text-ada-001**: Simple tasks, fastest GPT-3
             """
         )
 
